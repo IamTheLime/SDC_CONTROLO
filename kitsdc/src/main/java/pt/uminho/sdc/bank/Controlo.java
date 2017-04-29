@@ -71,6 +71,7 @@ public class Controlo  implements Control{
 
     public boolean resEntr(String L,int Seg, int Id){
         Linha l = linhas.get(L);
+        System.out.println("resEntr <------" + L + " " + Seg + " " + Id);
         boolean res = l.reserva(Seg,Id);
         System.out.println(l.toString());
         return res;
@@ -78,6 +79,7 @@ public class Controlo  implements Control{
 
     public void entrada(String L, int Seg,int Id) {
         Linha l = linhas.get(L);
+        System.out.println("Entrada<------" +L + " " + Seg + " " + Id);
         String al = l.setEntrada(Seg,Id);
         //Falta juntar linha ao alarme
         if(al.equalsIgnoreCase("alarme")){
@@ -91,9 +93,11 @@ public class Controlo  implements Control{
 
     public boolean saida(String L, int Seg, int Id) {
         Linha l = linhas.get(L);
+        System.out.println("saida<------" + L + " " + Seg + " " + Id);
         boolean res = l.setSaida(Seg,Id);
         //System.out.println("DLSMJNGUASHGKLADNFVKJAJRIOJEQGIOGJRIEQJGFKLSDAJGIOEHGIUOHEQRKIGJARIOGJ\nJKHDIUGHRWAUIGHQEURGHQEUGHdjskhgukashguasdhgioaso\nJKSDHUIJGAJGAOL\n" + res);
         System.out.println(l.toString());
+        System.out.println("Saida <--------" + res);
         return res;
     }
 

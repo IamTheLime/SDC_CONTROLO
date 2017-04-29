@@ -17,7 +17,7 @@ public class Linha {
 
     Linha(String N) {
         Name = N;
-        Nseg = ThreadLocalRandom.current().nextInt(5,20);
+        Nseg = ThreadLocalRandom.current().nextInt(5,6);
         seg = new int[Nseg];
         res = new int[Nseg];
         for(int i = 0; i<Nseg; i++) {
@@ -29,6 +29,7 @@ public class Linha {
 
     public int getNewId (Composicao c) {
         c.setId(Id);
+        comboios.ensureCapacity(Id);
         comboios.add(Id,c);
         int res = Id;
         Id++;
@@ -39,6 +40,7 @@ public class Linha {
         Composicao c = comboios.get(Id);
         if (c == null) return false;
         if(S < 0) return false;
+        if(S >=  Nseg) return true;
         int s = S + 2;
         if(s > Nseg) s = Nseg;
         for (int i = S; i < s; i++) {
@@ -48,9 +50,12 @@ public class Linha {
         for (int i = S; i < s && i >= 0; i--) {
             if((seg[i] != Id && res[i] != Id) && (seg[i] != -1 && res[i] != -1)) return false;
         }
-        if(c.isJaentrou()) res[S] = Id;
+        if(c.isJaentrou()) {
+            res[S] = Id;
+        }
         else {
-            for (int i = S; i < s && i >= 0; i--) {
+            System.out.println("reserva " + s + " S " + S);
+            for (int i = s; i <= S; i++) {
                 res[i] = Id;
             }
         }
@@ -59,39 +64,48 @@ public class Linha {
 
     public String setEntrada(int S, int Id){
         Composicao c = comboios.get(Id);
-        String re=null;
-        if(res[S]!=Id)
+        String re=" ";
+        if(S >=  Nseg) return re;
+        if(res[S]!=Id) {
             re = "alarme!";
+        }
         if(seg[S] != -1) {
             re = "alarme!";
         }
         int s;
         if(c.isJaentrou()) {
             s = S - (c.getTamanho());
-            seg[s] = -1;
+            res[s] = -1;
             seg[S] = Id;
         }
         else {
-            s = S - (c.getTamanho() -1);
-            for (int i = S; i < s && i >= 0; i--) {
+            s = S - (c.getTamanho() - 1);
+            System.out.println();
+            System.out.println("setEntrada <--------" + S + " " + Id + " " + c.getId() + " " + c.getTamanho() + " " + s);
+            System.out.println();
+            for (int i = 0; i <= S ; i++) {
+                System.out.println("Duplicado " + i + " ");
+                res[i] = -1;
                 seg[i] = Id;
             }
+            c.setJaentrou(true);
         }
         return re;
     }
 
     public boolean setSaida(int S,int Id) {
         Composicao c = comboios.get(Id);
-        seg[S + 1 - c.getTamanho()] = -1;
-        res[S + 1 - c.getTamanho()] = -1;
-        if(S>=Nseg) {
-            for(int i = Nseg - 1; i > Nseg - 1 - c.getTamanho(); i--) {
-                seg[i] = -1;
-                res[i] = -1;
-            }
+        int li =S - c.getTamanho() ;
+        System.out.println("setSaida " + c.getTamanho() + " li " + li + " seg " + Nseg);
+        seg[li] = -1;
+        res[li] = -1;
+        if(li==Nseg - 1) {
+            //comboios.remove(Id);
             return true;
         }
-        else return false;
+        else{
+            return false;
+        }
     }
 
     public Linha(int nseg, int[] res, int[] seg, String name, ArrayList<Composicao> comboios, int id) {

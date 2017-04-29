@@ -171,7 +171,7 @@ public class ControloTester {
 
                 aux = Control.getId(linha,c);
                 c.setId(aux);
-                aux = 1;
+                aux = 0;
                 while(isRunning() && !acabou) {
                     long before = System.nanoTime();
                     switch (aux) {
@@ -181,6 +181,7 @@ public class ControloTester {
                                 res = Control.resEntr(linha,seg,c.getId());
                                 System.out.println("Yolo " + res);
                             }
+                            res = false;
                             aux = 1;
                             Control.entrada(linha,seg,c.getId());
                             System.out.println("Entrada");
@@ -191,16 +192,16 @@ public class ControloTester {
                                 res = Control.resEntr(linha,seg,c.getId());
                                 System.out.println("Yolo " + res);
                             }
-                            aux = 2;
+                            res = false;
                             Control.entrada(linha,seg,c.getId());
-                            aux = 3;
                             System.out.println("Entrada");
                             //Thread.sleep(2000);
                             acabou = Control.saida(linha,seg,c.getId());
-                            System.out.println("Saida");
-                            if(acabou) System.out.println("Acabou a linha");
+                            System.out.println("Saida " + acabou);
+                            if(acabou){
+                                System.out.println("Acabou a linha");
+                            }
                             seg++;
-                            aux = 1;
                             break;
                     }
                     long after = System.nanoTime();
