@@ -1,0 +1,19 @@
+
+1. Compile:
+
+ $ mvn clean compile
+
+2. Test local implementation:
+
+ $ ./run TestLocal
+
+3. Run remote server:
+
+ $ ./run BankServer
+
+and test it:
+
+ $ ./run TestRemote
+
+Note: TestLocal and TestRemote accept two optional parameters: number of client threads
+to use and duration (in seconds) of test.

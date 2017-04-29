@@ -1,0 +1,9 @@
+#!/usr/bin/env sh
+
+BASEDIR=`dirname $0`
+
+mvn -v >/dev/null 2>&1 || { echo "Maven not found. Nothing to do." ; exit 1 ; }
+
+mvn install:install-file -Dfile=spread-4.4.0.jar -DartifactId=spread -DgroupId=org.spread -Dpackaging=jar -Dversion=4.4.0 -DgeneratePom=true -Djavadoc=spread-javadoc-4.4.0.jar
+
+

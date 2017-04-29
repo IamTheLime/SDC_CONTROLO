@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+
+clsname=`find src/main/java/ -name $1.java | head -1 | cut -d/ -f4- | cut -d. -f1 | tr / .`
+
+if [ -z $clsname ]
+then
+	echo "class $1 not found"
+else
+	echo "running: java $clsname ${*:2}"
+	mvn -q -e exec:java -Dexec.mainClass="$clsname" -Dexec.args="${*:2}"
+fi
+
