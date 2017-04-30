@@ -158,11 +158,11 @@ public class ControloTester {
         public void run() {
             try {
                 Control Control = supplier.get();
-                Composicao c = new Composicao(ThreadLocalRandom.current().nextInt(1,3),0);
+                Composicao c = new Composicao();
                 int aux = ThreadLocalRandom.current().nextInt(0,3);
                 boolean res = false;
                 int seg = c.getTamanho() - 1;
-                linha = nomesL[1];
+                linha = nomesL[aux];
                 boolean acabou = false;
 
                 logger.debug("worker connected to Control");

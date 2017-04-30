@@ -1,5 +1,6 @@
 package pt.uminho.sdc.bank;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.concurrent.ThreadLocalRandom;
@@ -7,7 +8,7 @@ import java.util.concurrent.ThreadLocalRandom;
 /**
  * Created by rui on 28-04-2017.
  */
-public class Linha {
+public class Linha implements Serializable {
     private int Nseg;
     private int[] res;
     private int[] seg;
@@ -17,7 +18,7 @@ public class Linha {
 
     Linha(String N) {
         Name = N;
-        Nseg = ThreadLocalRandom.current().nextInt(5,6);
+        Nseg = ThreadLocalRandom.current().nextInt(5000,6000);
         seg = new int[Nseg];
         res = new int[Nseg];
         for(int i = 0; i<Nseg; i++) {
@@ -46,7 +47,7 @@ public class Linha {
         for (int i = S; i < s; i++) {
             if (seg[i] != -1 && res[i] != -1) return false;
         }
-        s = S - (c.getTamanho() -1);
+        s = S - (c.getTamanho() -1) ;
         for (int i = S; i < s && i >= 0; i--) {
             if((seg[i] != Id && res[i] != Id) && (seg[i] != -1 && res[i] != -1)) return false;
         }
@@ -100,7 +101,7 @@ public class Linha {
         seg[li] = -1;
         res[li] = -1;
         if(li==Nseg - 1) {
-            //comboios.remove(Id);
+            c.setJaentrou(false);
             return true;
         }
         else{

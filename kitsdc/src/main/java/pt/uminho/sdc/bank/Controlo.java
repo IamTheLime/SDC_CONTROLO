@@ -1,5 +1,11 @@
 package pt.uminho.sdc.bank;
 
+import pt.uminho.sdc.cs.Message;
+
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -7,7 +13,7 @@ import java.util.Map;
 /**
  * Created by rui on 28-04-2017.
  */
-public class Controlo  implements Control{
+public class Controlo  implements Control, Serializable{
     private Map<String,Linha> linhas;
     private String[] nomesL = {"Braga-Porto","Porto-Braga","Lisboa-Porto","Porto-Lisboa"};
     private ArrayList<String> alarmes = new ArrayList<>();
@@ -65,21 +71,21 @@ public class Controlo  implements Control{
     public int getId(String L, Composicao C) {
         Linha l = linhas.get(L);
         int res = l.getNewId(C);
-        System.out.println(l.toString());
+        //System.out.println(l.toString());
         return res;
     }
 
     public boolean resEntr(String L,int Seg, int Id){
         Linha l = linhas.get(L);
-        System.out.println("resEntr <------" + L + " " + Seg + " " + Id);
+        //System.out.println("resEntr <------" + L + " " + Seg + " " + Id);
         boolean res = l.reserva(Seg,Id);
-        System.out.println(l.toString());
+        //System.out.println(l.toString());
         return res;
     }
 
     public void entrada(String L, int Seg,int Id) {
         Linha l = linhas.get(L);
-        System.out.println("Entrada<------" +L + " " + Seg + " " + Id);
+        //System.out.println("Entrada<------" +L + " " + Seg + " " + Id);
         String al = l.setEntrada(Seg,Id);
         //Falta juntar linha ao alarme
         if(al.equalsIgnoreCase("alarme")){
@@ -87,17 +93,17 @@ public class Controlo  implements Control{
             aux = al + ": " + Id + " " + Seg;
             alarmes.add(aux);
         }
-        System.out.println(l.toString());
+        //System.out.println(l.toString());
 
     }
 
     public boolean saida(String L, int Seg, int Id) {
         Linha l = linhas.get(L);
-        System.out.println("saida<------" + L + " " + Seg + " " + Id);
+        //System.out.println("saida<------" + L + " " + Seg + " " + Id);
         boolean res = l.setSaida(Seg,Id);
         //System.out.println("DLSMJNGUASHGKLADNFVKJAJRIOJEQGIOGJRIEQJGFKLSDAJGIOEHGIUOHEQRKIGJARIOGJ\nJKHDIUGHRWAUIGHQEURGHQEUGHdjskhgukashguasdhgioaso\nJKSDHUIJGAJGAOL\n" + res);
-        System.out.println(l.toString());
-        System.out.println("Saida <--------" + res);
+        //System.out.println(l.toString());
+        //System.out.println("Saida <--------" + res);
         return res;
     }
 
@@ -127,4 +133,11 @@ public class Controlo  implements Control{
     public Controlo clone() {
         return new Controlo(this.getLinhas(),this.getNomesL(),this.getAlarmes(),this.getNLinhas());
     }
+
+    public static Controlo fromByteArray(byte[] array) throws IOException, ClassNotFoundException {
+        ByteArrayInputStream bais = new ByteArrayInputStream(array);
+        ObjectInputStream ois = new ObjectInputStream(bais);
+        return (Controlo)ois.readObject();
+    }
+
 }
