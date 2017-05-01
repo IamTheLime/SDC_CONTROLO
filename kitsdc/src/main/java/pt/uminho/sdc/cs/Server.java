@@ -2,9 +2,7 @@ package pt.uminho.sdc.cs;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import pt.uminho.sdc.bank.BankImpl;
-import pt.uminho.sdc.bank.BankOperationRequest;
-import pt.uminho.sdc.bank.Controlo;
+import pt.uminho.sdc.controlo.Controlo;
 import spread.*;
 
 import java.io.EOFException;
@@ -18,7 +16,7 @@ import java.util.Arrays;
  */
 public class Server<T> {
 
-    private static Logger logger = LoggerFactory.getLogger(SocketServer.class);
+    private static Logger logger = LoggerFactory.getLogger(Server.class);
     private final T state;
     private String server;
     private int port;
@@ -69,7 +67,7 @@ public class Server<T> {
                 int order  = 0;
                 Message m;
                 if(message.isMembership()) {
-                    //Codigo de repolicacao em principio nao se mexe
+                    //Codigo de replicacao
                     MembershipInfo i = message.getMembershipInfo();
                     if(i.isCausedByLeave() || i.isCausedByDisconnect()) return;
                     if(i.isCausedByJoin()) {
@@ -103,6 +101,7 @@ public class Server<T> {
                                 System.out.println("MSIZE " + msize + " BSIZE " + bsize);
                                 buf = new byte[bsize];
                                 msize = (int) Math.ceil(bsize/500);
+                                // A ordem vai servir para descar mensagens de estado repetidas
                                 order = 0;
                                 for(int j = 0; j <= msize; j++){
                                     //receber fragmentos

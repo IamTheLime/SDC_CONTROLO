@@ -2,7 +2,6 @@ package pt.uminho.sdc.cs;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import pt.uminho.sdc.bank.BankOperationRequest;
 import spread.SpreadConnection;
 import spread.SpreadException;
 import spread.SpreadGroup;

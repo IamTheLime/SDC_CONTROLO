@@ -1,6 +1,7 @@
 /home/rui/Documents/SDC_CONTROLO/kitsdc/src/main/java/pt/uminho/sdc/bank/BankTester.java
 /home/rui/Documents/SDC_CONTROLO/kitsdc/src/main/java/pt/uminho/sdc/bank/Control.java
 /home/rui/Documents/SDC_CONTROLO/kitsdc/src/main/java/pt/uminho/sdc/cs/SocketClient.java
+/home/rui/Documents/SDC_CONTROLO/kitsdc/src/main/java/pt/uminho/sdc/bank/ClienteMan.java
 /home/rui/Documents/SDC_CONTROLO/kitsdc/src/main/java/pt/uminho/sdc/cs/Request.java
 /home/rui/Documents/SDC_CONTROLO/kitsdc/src/main/java/pt/uminho/sdc/bank/BankClient.java
 /home/rui/Documents/SDC_CONTROLO/kitsdc/src/main/java/pt/uminho/sdc/cs/ClientSideException.java
@@ -21,6 +22,7 @@
 /home/rui/Documents/SDC_CONTROLO/kitsdc/src/main/java/pt/uminho/sdc/bank/ControloClient.java
 /home/rui/Documents/SDC_CONTROLO/kitsdc/src/main/java/pt/uminho/sdc/bank/SaidaRequest.java
 /home/rui/Documents/SDC_CONTROLO/kitsdc/src/main/java/pt/uminho/sdc/cs/Client.java
+/home/rui/Documents/SDC_CONTROLO/kitsdc/src/main/java/pt/uminho/sdc/bank/SaidaTotalRequest.java
 /home/rui/Documents/SDC_CONTROLO/kitsdc/src/main/java/pt/uminho/sdc/cs/SocketServer.java
 /home/rui/Documents/SDC_CONTROLO/kitsdc/src/main/java/pt/uminho/sdc/bank/EntradaRequest.java
 /home/rui/Documents/SDC_CONTROLO/kitsdc/src/main/java/pt/uminho/sdc/bank/Controlo.java
