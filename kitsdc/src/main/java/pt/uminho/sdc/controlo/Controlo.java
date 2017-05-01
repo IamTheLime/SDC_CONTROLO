@@ -70,7 +70,6 @@ public class Controlo  implements Control, Serializable{
     public int getId(String L, Composicao C) {
         Linha l = linhas.get(L);
         int res = l.getNewId(C);
-        //System.out.println(l.toString());
         return res;
     }
 
@@ -81,7 +80,6 @@ public class Controlo  implements Control, Serializable{
             logger.info("O pedido de reserva de entrada no segmento {} da linha {} pela composicao {} falhou!",Seg,L,Id);
         else
             logger.info("O pedido de reserva de entrada no segmento {} da linha {} pela composicao {} foi executado com sucesso!",Seg,L,Id);
-        //System.out.println(l.toString());
         return res;
     }
 
@@ -106,7 +104,6 @@ public class Controlo  implements Control, Serializable{
             logger.info("O comboio {} chegou ao fim da linha",Id,L);
         else
             logger.info("Saida da composicao {} do segmento {} da linha {} efetuado falhou",Id,Seg,L);
-        //System.out.println(l.toString());
         return res;
     }
 
@@ -154,17 +151,6 @@ public class Controlo  implements Control, Serializable{
         oos.writeObject(this);
         return baos.toByteArray();
     }
-
-    /*@Override
-    public String toString() {
-        StringBuilder sb = new StringBuilder();
-        for(Map.Entry<String, Linha> entry : linhas.entrySet()) {
-            String key = entry.getKey();
-            Linha value = entry.getValue();
-            sb.append(value.toString() + " \n");
-        }
-        return sb.toString();
-    }*/
 
     @Override
     public String toString() {

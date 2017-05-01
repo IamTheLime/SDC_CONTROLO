@@ -45,26 +45,20 @@ public class Linha implements Serializable {
         int s = S + 2;
         if(s > Nseg) s = Nseg - 1;
         for (int i = S ; i <= s; i++) {
-            //System.out.print("i " + i + " res " + res[i] + " seg " + seg[i]);
             if (seg[i] != -1 || res[i] != -1) return false;
         }
-        System.out.println();
         s = S - (c.getTamanho() -1) - 2;
 
         if(s < 0) s = 0;
 
         for (int i = s; i < S; i++) {
-            //System.out.print("i " + i + " res " + res[i] + " seg " + seg[i] + " s " + s);
             if((seg[i] != Id && res[i] != Id) && (seg[i] != -1 || res[i] != -1)) return false;
         }
-        //System.out.println();
         s = S - (c.getTamanho() -1);
         if(c.isJaentrou()) {
-            //System.out.println("reserva " + s + " S " + S);
             res[S] = Id;
         }
         else {
-            //System.out.println("reserva " + s + " S " + S);
             for (int i = s; i <= S; i++) {
                 res[i] = Id;
             }
@@ -91,24 +85,18 @@ public class Linha implements Serializable {
         }
         else {
             s = S - (c.getTamanho() - 1);
-            //System.out.println();
-            //System.out.println("setEntrada <--------" + S + " " + Id + " " + c.getId() + " " + c.getTamanho() + " " + s);
-           // System.out.println();
             for (int i = s; i <= S ; i++) {
-                //System.out.println("Duplicado " + i + " ");
                 res[i] = -1;
                 seg[i] = Id;
             }
             c.setJaentrou(true);
         }
-        //System.out.println("Entrada 525 " + re);
         return re;
     }
 
     public boolean setSaida(int S,int Id) {
         Composicao c = comboios.get(Id);
         int li =S - c.getTamanho() ;
-        //System.out.println("setSaida " + c.getTamanho() + " li " + li + " seg " + Nseg);
         seg[li] = -1;
         res[li] = -1;
         if(li==Nseg - 1) {

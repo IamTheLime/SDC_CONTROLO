@@ -25,7 +25,7 @@ public class ClienteMan {
 
     public static void main(String [] args) throws IOException, SpreadException {
         ClienteMan.Worker t = new ClienteMan(() -> new ControloClient(
-                new SocketClient<Control>("localhost",/*Integer.parseInt(args[0])*/ 4803,"Controlo")
+                new SocketClient<Control>("localhost",4803,"Controlo")
         )).new Worker();
         t.start();
     }
@@ -116,7 +116,6 @@ public class ClienteMan {
                                 aux = 1;
                                 out = Control.entrada(linha, seg, c.getId());
                                 logger.info("Entrada: {}", out);
-                                //System.out.println("Entrada");
                                 seg++;
                             }
                             break;
@@ -133,15 +132,11 @@ public class ClienteMan {
                                 res = false;
                                 out = Control.entrada(linha, seg, c.getId());
                                 logger.info("Entrada: {}", out);
-                                //System.out.println("Entrada");
                                 acabou = Control.saida(linha, seg, c.getId());
-                                //System.out.println("Saida " + acabou);
                                 if (acabou) {
-                                    System.out.println("Acabou a linha");
+                                    logger.info("A linha {} acabou", linha);
                                 }
                                 seg++;
-                                /*if(ThreadLocalRandom.current().nextBoolean())
-                                    aux = 2;*/
                             }
                             break;
                         case 2:
@@ -151,7 +146,7 @@ public class ClienteMan {
                             logger.info("ERROR: {}" , out);
                             acabou = Control.saida(linha,seg,c.getId());
                             if(acabou){
-                                //System.out.println("Acabou a linha");
+                                logger.info("A linha {} acabou", linha);
                             }
                             seg++;
                             break;

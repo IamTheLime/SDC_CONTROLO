@@ -90,7 +90,6 @@ public class Server<T> {
                                         //chegou o estado
                                         break;
                                 }
-                                System.out.print("SLKAJDHGUJIAHDUGIHASDKJVNASJKDGUIASDHGVJKSADUIVBAHDFIUANIFGHDKAJLFNBVJIUADBIUHAFUIHEAU\nSJDAHGSAHGJSADJHGKLJASJHIODGHASPOIGHADSIOFGHADOIU");
 
                                 //preparar para a receção do estado
                                 ValueReply<T> s = (ValueReply<T>) ValueReply.fromByteArray(info.getData());
@@ -98,7 +97,7 @@ public class Server<T> {
                                 int bsize = msize;
                                 int copiado = 0;
                                 int copy = 500;
-                                System.out.println("MSIZE " + msize + " BSIZE " + bsize);
+                                
                                 buf = new byte[bsize];
                                 msize = (int) Math.ceil(bsize/500);
                                 // A ordem vai servir para descar mensagens de estado repetidas
@@ -135,7 +134,7 @@ public class Server<T> {
                                 //((Controlo) state).setGeral((Controlo) ((ValueReply) ValueReply.fromByteArray(buf)).getValue());
                                 ((Controlo) state).setGeral(Controlo.fromByteArray(buf));
 
-                                //System.out.println("O Saldo clonado é " + ((BankImpl) state).getBalance());
+                                //
                                 genesis = true;
                                 for (int j = 0; j < fifo.size(); j++) {
                                     //Aplicar os pedidos que ficaram pendentes
@@ -155,7 +154,7 @@ public class Server<T> {
                                         e.printStackTrace();
                                     }
                                 }
-                                System.out.println("ESTADO " + state.toString());
+                                
                                 return;
                             }
                             else{
@@ -166,7 +165,7 @@ public class Server<T> {
                         }
                         else {
                             order = -1;
-                            System.out.println("AKJHSKUGFHSDUAGVKJLASDGIOAO\nSJKHFOIASDHJGIOASHSKDGFHASID\n ------->A enviar estado <--------\n ,MAJSJFKQHSADUHASODKSGLAS");
+                            
                             //Estado a ser replicado está a ser preparado para enviar para quem pediu o estado
                             //rep = new ValueReply<>(((Controlo)state).clone());
 
@@ -194,12 +193,12 @@ public class Server<T> {
                                 resp.setSafe();
                                 //Arrays.copyOfRange(oldArray, startIndex, endIndex);
                                 if( j == msize ) {
-                                    System.out.println("Envio " + ((j) * 500 + (buf.length - (j * 500)) - j * 500));
+                                    
                                     ValueReply<byte[]> msg = new ValueReply<>(Arrays.copyOfRange(buf, j * 500, ((j) * 500) + (buf.length - (j * 500))),order++);
                                     resp.setData(msg.toByteArray());
                                 }
                                 else {
-                                    System.out.println("Envio " + ((j + 1) * 500 - (j) * 500));
+                                    
                                     ValueReply<byte[]> msg = new ValueReply<>(Arrays.copyOfRange(buf, j * 500, (j+1) * 500),order++);
                                     resp.setData(msg.toByteArray());
                                 }
@@ -209,7 +208,7 @@ public class Server<T> {
                                     e.printStackTrace();
                                 }
                             }
-                            System.out.println("AKJHSKUGFHSDUAGVKJLASDGIOAO\nSJKHFOIASDHJGIOASHSKDGFHASID\n ------->Enviei estado   <--------\n ,MAJSJFKQHSADUHASODKSGLAS" + state.toString());
+                            
                             return;
 
                         }

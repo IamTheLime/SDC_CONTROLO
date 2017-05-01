@@ -53,16 +53,6 @@ public class ControloTester {
 
         Control Control;
 
-        /*try {
-            Control = supplier.get();
-            logger.debug("connected to Control");
-
-            initial = Control.getBalance();
-        } catch(Exception e) {
-            logger.error("cannot get initial balance: test aborted", e);
-            return;
-        }*/
-
         for(int i=0; i<worker.length; i++)
             worker[i] = new ControloTester.Worker();
         for(int i=0; i<worker.length; i++)
@@ -97,25 +87,6 @@ public class ControloTester {
         }
 
         logger.info("performance: {} ops, {} ops/s, {} s", nops, nops/((after-before)/1e9d), (totalrtt/1e9d)/nops);
-
-        /*int result = 0;
-        try {
-            result = Control.getBalance();
-        } catch(RemoteInvocationException e) {
-            logger.error("cannot get final balance: test aborted", e);
-            return;
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (SpreadException e) {
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-
-        if (initial+totalop == result)
-            logger.info("test PASSED: final balance matches operations");
-        else
-            logger.error("test FAILED: final balance does not match operations");*/
     }
 
     private static enum Stage { Warmup, Run, Shutdown, Error };
@@ -181,7 +152,6 @@ public class ControloTester {
                             res = false;
                             aux = 1;
                             Control.entrada(linha,seg,c.getId());
-                            //System.out.println("Entrada");
                             seg++;
                             break;
                         case 1:
@@ -193,31 +163,12 @@ public class ControloTester {
                             res = false;
                             out = Control.entrada(linha,seg,c.getId());
                             logger.info("Entrada: {}" , out);
-                            //System.out.println("Entrada");
                             acabou = Control.saida(linha,seg,c.getId());
-                            //System.out.println("Saida " + acabou);
                             if(acabou){
                                 aux = 3;
                                 logger.info("Final da linha {}" + linha);
                             }
                             seg++;
-                            /*if(ThreadLocalRandom.current().nextBoolean())
-                                aux = 2;*/
-                            break;
-                        case 2:
-                            //Erro forçado
-                            out = Control.entrada(linha,seg,c.getId());
-                            logger.info("ERROR: {}" , out);
-                            //System.out.println("Erro");
-                            //Thread.sleep(2000);
-                            acabou = Control.saida(linha,seg,c.getId());
-                            //System.out.println("Saida " + acabou);
-                            if(acabou){
-                                aux = 3;
-                                logger.info("Final da linha {}" + linha);
-                            }
-                            seg++;
-                            aux = 1;
                             break;
                         case 3:
                             break;
@@ -225,20 +176,6 @@ public class ControloTester {
                     long after = System.nanoTime();
                     log(after - before);
                 }
-
-                /*while (isRunning()) {
-                    int op = 0;
-                    long before = System.nanoTime();
-                    if (random.nextFloat() < .1) {
-                        Control.getBalance();
-                    } else {
-                        op = random.nextInt(100) - 60;
-                        if (!Control.operation(op))
-                            op = 0;
-                    }
-                    long after = System.nanoTime();
-                    log(after - before, op);
-                }*/
                 Control.saidaTotal(linha,c.getId());
             } catch(Exception e) {
                 logger.error("worker stopping on exception", e);
