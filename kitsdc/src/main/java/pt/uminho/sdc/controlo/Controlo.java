@@ -87,7 +87,6 @@ public class Controlo  implements Control, Serializable{
 
     public String entrada(String L, int Seg,int Id) {
         Linha l = linhas.get(L);
-        //System.out.println("Entrada<------" +L + " s " + Seg + " i " + Id);
         String al = l.setEntrada(Seg,Id);
         if(al.equalsIgnoreCase("alarme!")){
             String aux;
@@ -95,13 +94,8 @@ public class Controlo  implements Control, Serializable{
             logger.info("ALARME {}", aux);
             alarmes.add(aux);
         }
-
-        /*System.out.println("Alarmes:");
-        for(String s: alarmes) {
-            System.out.println("ERROR " + s);
-        }*/
-        //System.out.println(l.toString());
-        //System.out.println("\n\n");
+        else
+            logger.info("Entrada com sucesso no segmento {} na linha {} da composicao {}",Seg,L,Id);
         return al;
     }
 
@@ -109,7 +103,7 @@ public class Controlo  implements Control, Serializable{
         Linha l = linhas.get(L);
         boolean res = l.setSaida(Seg,Id);
         if(res)
-            logger.info("Saida da composicao {} do segmento {} da linha {} efetuado com sucesso",Id,Seg,L);
+            logger.info("O comboio {} chegou ao fim da linha",Id,L);
         else
             logger.info("Saida da composicao {} do segmento {} da linha {} efetuado falhou",Id,Seg,L);
         //System.out.println(l.toString());
