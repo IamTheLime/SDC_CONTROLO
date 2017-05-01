@@ -159,15 +159,13 @@ public class ControloTester {
             try {
                 Control Control = supplier.get();
                 Composicao c = new Composicao();
-                int aux = ThreadLocalRandom.current().nextInt(0,3);
+                int aux =  0;//ThreadLocalRandom.current().nextInt(0,3);
                 boolean res = false;
                 int seg = c.getTamanho() - 1;
                 linha = nomesL[aux];
                 boolean acabou = false;
 
                 logger.debug("worker connected to Control");
-
-                aux = 0;
 
                 aux = Control.getId(linha,c);
                 c.setId(aux);
@@ -179,18 +177,19 @@ public class ControloTester {
                             //Entrada
                             while(!res) {
                                 res = Control.resEntr(linha,seg,c.getId());
-                                System.out.println("Yolo " + res);
+                                System.out.println("Yolo " + res + " c " + c. getId());
                             }
                             res = false;
                             aux = 1;
                             Control.entrada(linha,seg,c.getId());
                             System.out.println("Entrada");
                             seg++;
+                            //Thread.sleep(5000);
                             break;
                         case 1:
                             while(!res) {
                                 res = Control.resEntr(linha,seg,c.getId());
-                                System.out.println("Yolo " + res);
+                                System.out.println("Yolo " + res + " c " + c. getId());
                             }
                             res = false;
                             Control.entrada(linha,seg,c.getId());

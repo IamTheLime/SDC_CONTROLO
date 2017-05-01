@@ -18,7 +18,7 @@ public class Linha implements Serializable {
 
     Linha(String N) {
         Name = N;
-        Nseg = ThreadLocalRandom.current().nextInt(5000,6000);
+        Nseg = ThreadLocalRandom.current().nextInt(5,6);
         seg = new int[Nseg];
         res = new int[Nseg];
         for(int i = 0; i<Nseg; i++) {

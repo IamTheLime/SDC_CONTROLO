@@ -103,24 +103,38 @@ public class Server<T> {
                                 System.out.println("MSIZE " + msize + " BSIZE " + bsize);
                                 buf = new byte[bsize];
                                 msize = (int) Math.ceil(bsize/500);
+                                order = 0;
                                 for(int j = 0; j <= msize; j++){
                                     //receber fragmentos
                                     //Thread.sleep(5000);
                                     info = connection.receive();
-                                    s = (ValueReply<T>) ValueReply.fromByteArray(info.getData());
-                                    System.out.println("RECECAO " + bsize + " copy " + copy + " copiado " + copiado + " msize " + msize
-                                            + " i " + j + " bl " + buf.length + " s.get " + ((byte[]) s.getValue()).length);
-                                    //buf = Arrays.copyOf((byte[]) s.getValue(),copy);
-                                    System.arraycopy((byte[]) s.getValue(),0,buf, copiado,copy);
-                                    bsize = bsize - 500;
-                                    copiado += copy;
-                                    if(bsize < 500)
-                                        copy = bsize;
+                                    m = Message.fromByteArray(info.getData());
+                                    if(m instanceof Request) {
+                                        fifo.add(info);
+                                        j--;
+                                    }
+                                    else {
+                                        s = (ValueReply<T>) ValueReply.fromByteArray(info.getData());
+                                        if(order!=s.getOrder()){
+                                            j--;
+                                            continue;
+                                        }
+                                        order++;
+                                        System.out.println("RECECAO " + bsize + " copy " + copy + " copiado " + copiado + " msize " + msize
+                                                + " i " + j + " bl " + buf.length + " s.get " + ((byte[]) s.getValue()).length);
+                                        //buf = Arrays.copyOf((byte[]) s.getValue(),copy);
+                                        System.arraycopy((byte[]) s.getValue(), 0, buf, copiado, copy);
+                                        bsize = bsize - 500;
+                                        copiado += copy;
+                                        if (bsize < 500)
+                                            copy = bsize;
+                                    }
                                 }
                                 //replicar o estado que recebeu
                                 logger.info("Received State");
                                 //O que está guardado no buf é um ValueReply
-                                ((Controlo) state).setGeral((Controlo) ((ValueReply) ValueReply.fromByteArray(buf)).getValue());
+                                //((Controlo) state).setGeral((Controlo) ((ValueReply) ValueReply.fromByteArray(buf)).getValue());
+                                ((Controlo) state).setGeral(Controlo.fromByteArray(buf));
 
                                 //System.out.println("O Saldo clonado é " + ((BankImpl) state).getBalance());
                                 genesis = true;
@@ -142,6 +156,7 @@ public class Server<T> {
                                         e.printStackTrace();
                                     }
                                 }
+                                System.out.println("ESTADO " + state.toString());
                                 return;
                             }
                             else{
@@ -151,12 +166,13 @@ public class Server<T> {
                             }
                         }
                         else {
+                            order = -1;
                             System.out.println("AKJHSKUGFHSDUAGVKJLASDGIOAO\nSJKHFOIASDHJGIOASHSKDGFHASID\n ------->A enviar estado <--------\n ,MAJSJFKQHSADUHASODKSGLAS");
                             //Estado a ser replicado está a ser preparado para enviar para quem pediu o estado
-                            rep = new ValueReply<>(((Controlo)state).clone());
+                            //rep = new ValueReply<>(((Controlo)state).clone());
 
                             //prepara a mensagem de resposta
-                            buf = rep.toByteArray();
+                            buf = ((Controlo) state).toByteArray();
                             msize = (int) Math.ceil(buf.length/500);
                             //mandar o número de mensagens que vai receber
                             SpreadGroup group = message.getSender();
@@ -170,6 +186,7 @@ public class Server<T> {
                             } catch (SpreadException e) {
                                 e.printStackTrace();
                             }
+                            order = 0;
                             //mandar os fragmentos da mensagem
                             for(int j = 0; j <= msize; j++) {
                                 group = message.getSender();
@@ -179,12 +196,12 @@ public class Server<T> {
                                 //Arrays.copyOfRange(oldArray, startIndex, endIndex);
                                 if( j == msize ) {
                                     System.out.println("Envio " + ((j) * 500 + (buf.length - (j * 500)) - j * 500));
-                                    ValueReply<byte[]> msg = new ValueReply<>(Arrays.copyOfRange(buf, j * 500, ((j) * 500) + (buf.length - (j * 500))));
+                                    ValueReply<byte[]> msg = new ValueReply<>(Arrays.copyOfRange(buf, j * 500, ((j) * 500) + (buf.length - (j * 500))),order++);
                                     resp.setData(msg.toByteArray());
                                 }
                                 else {
                                     System.out.println("Envio " + ((j + 1) * 500 - (j) * 500));
-                                    ValueReply<byte[]> msg = new ValueReply<>(Arrays.copyOfRange(buf, j * 500, (j+1) * 500));
+                                    ValueReply<byte[]> msg = new ValueReply<>(Arrays.copyOfRange(buf, j * 500, (j+1) * 500),order++);
                                     resp.setData(msg.toByteArray());
                                 }
                                 try {
@@ -193,7 +210,7 @@ public class Server<T> {
                                     e.printStackTrace();
                                 }
                             }
-                            System.out.println("AKJHSKUGFHSDUAGVKJLASDGIOAO\nSJKHFOIASDHJGIOASHSKDGFHASID\n ------->Enviei estado   <--------\n ,MAJSJFKQHSADUHASODKSGLAS");
+                            System.out.println("AKJHSKUGFHSDUAGVKJLASDGIOAO\nSJKHFOIASDHJGIOASHSKDGFHASID\n ------->Enviei estado   <--------\n ,MAJSJFKQHSADUHASODKSGLAS" + state.toString());
                             return;
 
                         }
@@ -206,7 +223,7 @@ public class Server<T> {
                     if(message.getSender().equals(connection.getPrivateGroup()))
                     {
                         //Mensagem dele próprio de confirmação de receção
-                        logger.info("Message got discarded");
+                        //logger.info("Message got discarded");
                         return;
                     }
 

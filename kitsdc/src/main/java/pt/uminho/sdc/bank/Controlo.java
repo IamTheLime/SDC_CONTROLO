@@ -2,10 +2,7 @@ package pt.uminho.sdc.bank;
 
 import pt.uminho.sdc.cs.Message;
 
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.Serializable;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -140,4 +137,21 @@ public class Controlo  implements Control, Serializable{
         return (Controlo)ois.readObject();
     }
 
+    public byte[] toByteArray() throws IOException {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        ObjectOutputStream oos = new ObjectOutputStream(baos);
+        oos.writeObject(this);
+        return baos.toByteArray();
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        for(Map.Entry<String, Linha> entry : linhas.entrySet()) {
+            String key = entry.getKey();
+            Linha value = entry.getValue();
+            sb.append(value.toString() + " \n");
+        }
+        return sb.toString();
+    }
 }
